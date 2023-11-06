@@ -15,10 +15,10 @@ inc_cls_num: 20
 task_num: 5
 
 
-epoch: 5
+epoch: 2
 device_ids: 1
 n_gpu: 1
-val_per_epoch: 5
+val_per_epoch: 2
 
 
 batch_size: 128
@@ -57,7 +57,7 @@ classifier:
     feat_dim: 512
     #n_hiddens: 100
     #n_layers: 2
-    n_memories: 500
+    n_memories: 200
     #n_outputs: 100
     n_task: 100
     memory_strength: 0

@@ -28,7 +28,8 @@ def compute_offsets(task, nc_per_task):
         offset1 = 0
         offset2 = nc_per_task
     '''
-    offset1 = task * nc_per_task
+    #offset1 = task * nc_per_task
+    offset1 = 0
     offset2 = (task + 1) * nc_per_task
     return offset1, offset2
 
@@ -81,10 +82,11 @@ def project2cone2(gradient, memories, margin=0.5, eps=1e-3):
         input:  memories, (t * p)-vector
         output: x, p-vector
     """
-    #memories_np = memories.cpu().t().double().numpy()
-    #gradient_np = gradient.cpu().contiguous().view(-1).double().numpy()
-    memories_np = memories.t().double().numpy()
-    gradient_np = gradient.contiguous().view(-1).double().numpy()
+    memories_np = memories.cpu().t().double().numpy()
+    gradient_np = gradient.cpu().contiguous().view(-1).double().numpy()
+    
+    #memories_np = memories.t().double().numpy()
+    #gradient_np = gradient.contiguous().view(-1).double().numpy()
     t = memories_np.shape[0]
     P = np.dot(memories_np, memories_np.transpose())
     P = 0.5 * (P + P.transpose()) + np.eye(t) * eps
@@ -113,6 +115,8 @@ class GEM(nn.Module):
         #self.net = ResNet18(n_outputs)
         #add defination in 
         self.net = backbone
+        #classifier
+        self.classifier = nn.Linear(feat_dim, num_class)
 
         self.ce = nn.CrossEntropyLoss()
         self.n_outputs = num_class
@@ -170,8 +174,9 @@ class GEM(nn.Module):
         '''
 
     def forward(self, x, t):
+        #print(x.device)
         x = x.to(self.device)
-        output = self.net(x)
+        output = self.classifier(self.net(x)['features'])
         '''
         if self.is_cifar:
             # make sure we predict classes within the current task
@@ -186,11 +191,12 @@ class GEM(nn.Module):
         offset2 = int((t + 1) * self.nc_per_task)
         if offset1 > 0:
             #output[:, :offset1].data.fill_(-10e10)
-            output['features'][:, :offset1].fill_(-10e10)
+            output[:, :offset1].fill_(-10e10)
         if offset2 < self.n_outputs:
             #output[:, offset2:self.n_outputs].data.fill_(-10e10)
-            output['features'][:, offset2:self.n_outputs].fill_(-10e10)
-        return output['features']
+            output[:, offset2:self.n_outputs].fill_(-10e10)
+        #print(output.size())
+        return output
 
     #def observe(self, x, t, y):
     def observe(self, data):
@@ -233,6 +239,8 @@ class GEM(nn.Module):
         if self.mem_cnt == self.n_memories:
             self.mem_cnt = 0
 
+        #to-do
+        
         # compute gradient on previous tasks
         if len(self.observed_tasks) > 1:
             for tt in range(len(self.observed_tasks) - 1):
@@ -241,15 +249,34 @@ class GEM(nn.Module):
                 past_task = self.observed_tasks[tt]
 
                 offset1, offset2 = compute_offsets(past_task, self.nc_per_task)
-
+                '''
+                print(self.forward(
+                        self.memory_data[past_task],
+                        past_task)[:, offset1: offset2].device)
+                
+                print((self.memory_labs[past_task] - offset1).device)
+                '''
+                '''
+                print(self.forward(
+                        self.memory_data[past_task],
+                        past_task)[:, offset1: offset2])
+                print(self.memory_labs[past_task] - offset1)
+                
+                _, predicted = torch.max(self.forward(
+                        self.memory_data[past_task],
+                        past_task)[:, offset1: offset2], 1)  
+                '''
+                #print(predicted)
+                #print(self.memory_labs[past_task] - offset1)
                 ptloss = self.ce(
                     self.forward(
                         self.memory_data[past_task],
-                        past_task)[:, offset1: offset2].to(self.device),
+                        past_task)[:, offset1: offset2],
                     (self.memory_labs[past_task] - offset1).to(self.device))
                 ptloss.backward()
                 store_grad(self.parameters, self.grads, self.grad_dims,
                            past_task)
+        
 
         # now compute the grad on the current minibatch
         self.zero_grad()
@@ -257,6 +284,8 @@ class GEM(nn.Module):
         offset1, offset2 = compute_offsets(self.t, self.nc_per_task)
         output = self.forward(x, self.t)[:, offset1: offset2]
         _, predicted = torch.max(output, 1)  
+        #print(predicted)
+        #print(y)
         correct = (predicted == (y - offset1)).sum().item()  
         total = y.size(0) 
         acc = correct / total 
@@ -266,19 +295,27 @@ class GEM(nn.Module):
 
         # check if gradient violates constraints
         # 不满足约束会更新梯度
+        #to-doS
+        
         if len(self.observed_tasks) > 1:
             # copy gradient
             store_grad(self.parameters, self.grads, self.grad_dims, self.t)
-            indx = torch.cuda.LongTensor(self.observed_tasks[:-1]) if self.gpu \
-                else torch.LongTensor(self.observed_tasks[:-1])
-            dotp = torch.mm(self.grads[:, self.t].unsqueeze(0),
-                            self.grads.index_select(1, indx))
+            #indx = torch.cuda.LongTensor(self.observed_tasks[:-1]) if self.gpu \
+            #    else torch.LongTensor(self.observed_tasks[:-1])
+            indx = torch.LongTensor(self.observed_tasks[:-1])
+            indx = indx.to(self.device)
+            self.grads = self.grads.to(self.device)
+            result = self.grads.index_select(1, indx)
+            dotp = torch.mm((self.grads[:, self.t].unsqueeze(0)).to(self.device),
+                            result)
+            dotp.to(self.device)
             if (dotp < 0).sum() != 0:
                 project2cone2(self.grads[:, self.t].unsqueeze(1),
                               self.grads.index_select(1, indx), self.margin)
                 # copy gradients back
                 overwrite_grad(self.parameters, self.grads[:, self.t],
                                self.grad_dims)
+        
         #self.opt.step()
 
         return output, acc, loss
@@ -320,3 +357,4 @@ class GEM(nn.Module):
 
     def after_task(self, task_idx, buffer, train_loader, test_loaders):
         self.t += 1
+        self.mem_cnt = 0
