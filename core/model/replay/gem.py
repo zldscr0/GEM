@@ -246,7 +246,7 @@ class GEM(nn.Module):
                     self.forward(
                         self.memory_data[past_task],
                         past_task)[:, offset1: offset2].to(self.device),
-                    self.memory_labs[past_task] - offset1)
+                    (self.memory_labs[past_task] - offset1).to(self.device))
                 ptloss.backward()
                 store_grad(self.parameters, self.grads, self.grad_dims,
                            past_task)
