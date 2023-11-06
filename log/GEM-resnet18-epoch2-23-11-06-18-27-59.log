@@ -216,3 +216,8 @@ learning rate: [0.03333333333333333]
 Epoch [0/2] |	Loss: 0.000 	Average Acc: 0.383 
 learning rate: [0.06666666666666667]
 ================ Train on the train set ================
+Epoch [1/2] |	Loss: 0.000 	Average Acc: 0.481 
+================ Test on the test set ================
+ * Average Acc: 0.106 Best acc 0.106
+ Per-Task Acc:[0.0, 0.0, 0.0, 0.0, 0.53]
+Time cost :  730.3242676258087
