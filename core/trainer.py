@@ -296,9 +296,9 @@ class Trainer(object):
             for batch_idx, batch in enumerate(dataloader):
                 output, acc, loss = self.model.observe(batch)
 
-                self.optimizer.zero_grad()
+                #self.optimizer.zero_grad()
 
-                loss.backward()
+                #loss.backward()
 
                 self.optimizer.step()
                 pbar.update(1)
@@ -328,5 +328,6 @@ class Trainer(object):
         
         return {"avg_acc" : np.mean(per_task_acc), "per_task_acc" : per_task_acc}
     
+
 
 
