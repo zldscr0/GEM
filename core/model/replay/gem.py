@@ -124,6 +124,7 @@ class GEM(nn.Module):
 
         #self.opt = optim.SGD(self.parameters(), args.lr)
 
+        #memory_size
         self.n_memories = kwargs["n_memories"]
         #self.gpu = args.cuda
         self.device = kwargs['device']
@@ -187,7 +188,8 @@ class GEM(nn.Module):
             if offset2 < self.n_outputs:
                 output[:, offset2:self.n_outputs].data.fill_(-10e10)
         '''
-        offset1 = int(t * self.nc_per_task)
+        #offset1 = int(t * self.nc_per_task)
+        offset1 = 0
         offset2 = int((t + 1) * self.nc_per_task)
         if offset1 > 0:
             #output[:, :offset1].data.fill_(-10e10)

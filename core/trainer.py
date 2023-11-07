@@ -304,6 +304,7 @@ class Trainer(object):
                 pbar.update(1)
                 
                 meter.update("acc1", acc)
+                meter.update("loss", loss.item())
 
 
         return meter
