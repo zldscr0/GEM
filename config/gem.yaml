@@ -15,10 +15,10 @@ inc_cls_num: 20
 task_num: 5
 
 
-epoch: 2
+epoch: 20
 device_ids: 1
 n_gpu: 1
-val_per_epoch: 2
+val_per_epoch: 5
 
 
 batch_size: 128
@@ -32,11 +32,11 @@ optimizer:
 lr_scheduler:
   name: StepLR
   kwargs:
-    gamma: 0.5
+    gamma: 0.1
     step_size: 10
 
 backbone:
-  name: resnet18
+  name: resnet34
   kwargs:
     num_classes: 100
     args: 
@@ -57,9 +57,9 @@ classifier:
     feat_dim: 512
     #n_hiddens: 100
     #n_layers: 2
-    n_memories: 200
+    n_memories: 500
     #n_outputs: 100
-    n_task: 100
+    n_task: 5
     memory_strength: 0
 
 

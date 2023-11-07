@@ -64,6 +64,7 @@ def overwrite_grad(pp, newgrad, grad_dims):
     cnt = 0
     for param in pp():
         if param.grad is not None:
+            #print("ok")
             beg = 0 if cnt == 0 else sum(grad_dims[:cnt])
             en = sum(grad_dims[:cnt + 1])
             this_grad = newgrad[beg: en].contiguous().view(
@@ -110,7 +111,7 @@ class GEM(nn.Module):
     def __init__(self, backbone, feat_dim, num_class, **kwargs):
         super().__init__()
         #nl, nh = kwargs.n_layers, kwargs.n_hiddens
-        self.margin = kwargs["memory_strength"]#?
+        #self.margin = kwargs["memory_strength"]#?
         
         #self.net = ResNet18(n_outputs)
         #add defination in 
@@ -241,7 +242,6 @@ class GEM(nn.Module):
         if self.mem_cnt == self.n_memories:
             self.mem_cnt = 0
 
-        #to-do
         
         # compute gradient on previous tasks
         if len(self.observed_tasks) > 1:
@@ -250,7 +250,8 @@ class GEM(nn.Module):
                 # fwd/bwd on the examples in the memory
                 past_task = self.observed_tasks[tt]
 
-                offset1, offset2 = compute_offsets(past_task, self.nc_per_task)
+                #offset1, offset2 = compute_offsets(past_task, self.nc_per_task)
+                offset1, offset2 = compute_offsets(self.t, self.nc_per_task)
                 '''
                 print(self.forward(
                         self.memory_data[past_task],
@@ -264,16 +265,28 @@ class GEM(nn.Module):
                         past_task)[:, offset1: offset2])
                 print(self.memory_labs[past_task] - offset1)
                 
+                
                 _, predicted = torch.max(self.forward(
                         self.memory_data[past_task],
                         past_task)[:, offset1: offset2], 1)  
+                
+                
+                print(predicted)
+                print(self.memory_labs[past_task] - offset1)
                 '''
-                #print(predicted)
+                #print(self.memory_data[past_task])
                 #print(self.memory_labs[past_task] - offset1)
+                '''
                 ptloss = self.ce(
                     self.forward(
                         self.memory_data[past_task],
                         past_task)[:, offset1: offset2],
+                    (self.memory_labs[past_task] - offset1).to(self.device))
+                '''
+                ptloss = self.ce(
+                    self.forward(
+                        self.memory_data[past_task],
+                        self.t)[:, offset1: offset2],
                     (self.memory_labs[past_task] - offset1).to(self.device))
                 ptloss.backward()
                 store_grad(self.parameters, self.grads, self.grad_dims,
@@ -298,7 +311,6 @@ class GEM(nn.Module):
         # check if gradient violates constraints
         # 不满足约束会更新梯度
         #to-doS
-        
         if len(self.observed_tasks) > 1:
             # copy gradient
             store_grad(self.parameters, self.grads, self.grad_dims, self.t)
@@ -312,12 +324,13 @@ class GEM(nn.Module):
                             result)
             dotp.to(self.device)
             if (dotp < 0).sum() != 0:
+                #project2cone2(self.grads[:, self.t].unsqueeze(1),
+                              #self.grads.index_select(1, indx), self.margin)
                 project2cone2(self.grads[:, self.t].unsqueeze(1),
-                              self.grads.index_select(1, indx), self.margin)
+                              self.grads.index_select(1, indx))
                 # copy gradients back
                 overwrite_grad(self.parameters, self.grads[:, self.t],
                                self.grad_dims)
-        
         #self.opt.step()
 
         return output, acc, loss
@@ -332,6 +345,8 @@ class GEM(nn.Module):
         correct = (predicted == (y - offset1)).sum().item()  
         total = y.size(0) 
         acc = correct / total 
+        print(predicted)
+        print(y)
         return predicted, acc
     '''
     def forward(self, x, t):
@@ -360,3 +375,4 @@ class GEM(nn.Module):
     def after_task(self, task_idx, buffer, train_loader, test_loaders):
         self.t += 1
         self.mem_cnt = 0
+        #print(self.t)

@@ -15,10 +15,10 @@ inc_cls_num: 10
 task_num: 10
 
 
-epoch: 100
+epoch: 1
 device_ids: 1
 n_gpu: 1
-val_per_epoch: 10
+val_per_epoch: 1
 
 
 batch_size: 128
