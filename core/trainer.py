@@ -231,7 +231,7 @@ class Trainer(object):
             self.buffer.total_classes += self.init_cls_num if task_idx == 0 else self.inc_cls_num
 
             dataloader = self.train_loader.get_loader(task_idx)
-            '''
+            
             if isinstance(self.buffer, LinearBuffer) and task_idx != 0:
                 datasets = dataloader.dataset
                 datasets.images.extend(self.buffer.images)
@@ -242,16 +242,7 @@ class Trainer(object):
                     batch_size = self.config['batch_size'],
                     drop_last = True
                 )
-            '''
-            if task_idx != 0:
-                datasets = dataloader.dataset
-                dataloader = DataLoader(
-                    datasets,
-                    shuffle = True,
-                    batch_size = self.config['batch_size'],
-                    drop_last = True
-                )
-
+           
 
             
             print("================Task {} Training!================".format(task_idx))
@@ -306,9 +297,11 @@ class Trainer(object):
         with tqdm(total=len(dataloader)) as pbar:
             for batch_idx, batch in enumerate(dataloader):
                 output, acc, loss = self.model.observe(batch)
-
+                
                 #self.optimizer.zero_grad()
 
+                #loss.backward()
+                #self.optimizer.zero_grad()
                 #loss.backward()
 
                 self.optimizer.step()

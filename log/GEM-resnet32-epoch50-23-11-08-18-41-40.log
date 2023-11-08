@@ -1,0 +1,437 @@
+{'data_root': '/data/bzx_yjy/cifar100', 'image_size': 32, 'pin_memory': False, 'augment': True, 'workers': 8, 'device_ids': 0, 'n_gpu': 1, 'seed': 1993, 'deterministic': True, 'epoch': 50, 'batch_size': 128, 'val_per_epoch': 5, 'optimzer': {'name': 'SGD', 'kwargs': {'lr': 0.1}}, 'lr_scheduler': {'name': 'StepLR', 'kwargs': {'gamma': 0.5, 'step_size': 30}}, 'warmup': 3, 'includes': ['headers/data.yaml', 'headers/device.yaml', 'headers/model.yaml', 'headers/optimizer.yaml', 'backbones/resnet12.yaml'], 'save_path': './', 'init_cls_num': 20, 'inc_cls_num': 20, 'task_num': 5, 'optimizer': {'name': 'SGD', 'kwargs': {'lr': 0.1, 'momentum': 0.9, 'weight_decay': 0.0002}}, 'backbone': {'name': 'resnet32', 'kwargs': None}, 'buffer': {'name': 'LinearBuffer', 'kwargs': {'buffer_size': 0, 'batch_size': 32, 'strategy': 'random'}}, 'classifier': {'name': 'GEM', 'kwargs': {'num_class': 100, 'feat_dim': 64, 'n_memories': 5120, 'n_task': 5, 'memory_strength': 0}}, 'rank': 0}
+GEM(
+  (net): CifarResNet(
+    (conv_1_3x3): Conv2d(3, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn_1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (stage_1): Sequential(
+      (0): ResNetBasicblock(
+        (conv_a): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): ResNetBasicblock(
+        (conv_a): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): ResNetBasicblock(
+        (conv_a): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (3): ResNetBasicblock(
+        (conv_a): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (4): ResNetBasicblock(
+        (conv_a): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(16, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (stage_2): Sequential(
+      (0): ResNetBasicblock(
+        (conv_a): Conv2d(16, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): DownsampleA(
+          (avg): AvgPool2d(kernel_size=1, stride=2, padding=0)
+        )
+      )
+      (1): ResNetBasicblock(
+        (conv_a): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): ResNetBasicblock(
+        (conv_a): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (3): ResNetBasicblock(
+        (conv_a): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (4): ResNetBasicblock(
+        (conv_a): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (stage_3): Sequential(
+      (0): ResNetBasicblock(
+        (conv_a): Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): DownsampleA(
+          (avg): AvgPool2d(kernel_size=1, stride=2, padding=0)
+        )
+      )
+      (1): ResNetBasicblock(
+        (conv_a): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): ResNetBasicblock(
+        (conv_a): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (3): ResNetBasicblock(
+        (conv_a): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (4): ResNetBasicblock(
+        (conv_a): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_a): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv_b): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn_b): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (avgpool): AvgPool2d(kernel_size=8, stride=8, padding=0)
+    (fc): Linear(in_features=64, out_features=10, bias=True)
+  )
+  (classifier): Linear(in_features=64, out_features=100, bias=True)
+  (ce): CrossEntropyLoss()
+)
+Trainable params in the model: 470654
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0002
+)
+================Task 0 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0002
+)
+================Task 0 Training!================
+The training samples number: 10000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/50] |	Loss: 2.697 	Average Acc: 0.182 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/50] |	Loss: 2.288 	Average Acc: 0.302 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/50] |	Loss: 2.086 	Average Acc: 0.360 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/50] |	Loss: 1.811 	Average Acc: 0.442 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/50] |	Loss: 1.616 	Average Acc: 0.496 
+================ Test on the test set ================
+ * Average Acc: 0.470 Best acc 0.470
+ Per-Task Acc:[0.47]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/50] |	Loss: 1.458 	Average Acc: 0.545 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/50] |	Loss: 1.326 	Average Acc: 0.583 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/50] |	Loss: 1.213 	Average Acc: 0.612 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/50] |	Loss: 1.093 	Average Acc: 0.650 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/50] |	Loss: 1.009 	Average Acc: 0.673 
+================ Test on the test set ================
+ * Average Acc: 0.530 Best acc 0.530
+ Per-Task Acc:[0.53]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/50] |	Loss: 0.918 	Average Acc: 0.706 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/50] |	Loss: 0.855 	Average Acc: 0.724 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/50] |	Loss: 0.760 	Average Acc: 0.753 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/50] |	Loss: 0.718 	Average Acc: 0.765 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/50] |	Loss: 0.654 	Average Acc: 0.786 
+================ Test on the test set ================
+ * Average Acc: 0.510 Best acc 0.530
+ Per-Task Acc:[0.51]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/50] |	Loss: 0.600 	Average Acc: 0.805 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/50] |	Loss: 0.550 	Average Acc: 0.820 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/50] |	Loss: 0.479 	Average Acc: 0.843 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/50] |	Loss: 0.488 	Average Acc: 0.834 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/50] |	Loss: 0.452 	Average Acc: 0.851 
+================ Test on the test set ================
+ * Average Acc: 0.530 Best acc 0.530
+ Per-Task Acc:[0.53]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [20/50] |	Loss: 0.417 	Average Acc: 0.865 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [21/50] |	Loss: 0.383 	Average Acc: 0.876 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [22/50] |	Loss: 0.400 	Average Acc: 0.867 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [23/50] |	Loss: 0.321 	Average Acc: 0.894 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [24/50] |	Loss: 0.371 	Average Acc: 0.879 
+================ Test on the test set ================
+ * Average Acc: 0.470 Best acc 0.530
+ Per-Task Acc:[0.47]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [25/50] |	Loss: 0.351 	Average Acc: 0.883 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [26/50] |	Loss: 0.308 	Average Acc: 0.900 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [27/50] |	Loss: 0.294 	Average Acc: 0.902 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [28/50] |	Loss: 0.303 	Average Acc: 0.898 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [29/50] |	Loss: 0.308 	Average Acc: 0.897 
+================ Test on the test set ================
+ * Average Acc: 0.550 Best acc 0.550
+ Per-Task Acc:[0.55]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [30/50] |	Loss: 0.343 	Average Acc: 0.887 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [31/50] |	Loss: 0.297 	Average Acc: 0.902 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [32/50] |	Loss: 0.092 	Average Acc: 0.972 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [33/50] |	Loss: 0.019 	Average Acc: 0.997 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [34/50] |	Loss: 0.010 	Average Acc: 0.999 
+================ Test on the test set ================
+ * Average Acc: 0.660 Best acc 0.660
+ Per-Task Acc:[0.66]
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [35/50] |	Loss: 0.008 	Average Acc: 0.999 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [36/50] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [37/50] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [38/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [39/50] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.670 Best acc 0.670
+ Per-Task Acc:[0.67]
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [40/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [41/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [42/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [43/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [44/50] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.670 Best acc 0.670
+ Per-Task Acc:[0.67]
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [45/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [46/50] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [47/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [48/50] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.05]
+================ Train on the train set ================
+Epoch [49/50] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.670 Best acc 0.670
+ Per-Task Acc:[0.67]
+================Task 1 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0002
+)
+================Task 1 Training!================
+The training samples number: 10000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/50] |	Loss: 2.943 	Average Acc: 0.205 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/50] |	Loss: 1.447 	Average Acc: 0.524 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/50] |	Loss: 0.982 	Average Acc: 0.671 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/50] |	Loss: 0.670 	Average Acc: 0.772 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/50] |	Loss: 0.460 	Average Acc: 0.847 
+================ Test on the test set ================
+ * Average Acc: 0.320 Best acc 0.320
+ Per-Task Acc:[0.0, 0.64]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/50] |	Loss: 0.348 	Average Acc: 0.884 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/50] |	Loss: 0.271 	Average Acc: 0.912 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/50] |	Loss: 0.238 	Average Acc: 0.930 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/50] |	Loss: 0.183 	Average Acc: 0.938 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/50] |	Loss: 0.172 	Average Acc: 0.942 
+================ Test on the test set ================
+ * Average Acc: 0.315 Best acc 0.320
+ Per-Task Acc:[0.01, 0.62]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/50] |	Loss: 0.159 	Average Acc: 0.945 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/50] |	Loss: 0.114 	Average Acc: 0.964 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/50] |	Loss: 0.122 	Average Acc: 0.962 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/50] |	Loss: 0.061 	Average Acc: 0.982 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/50] |	Loss: 0.070 	Average Acc: 0.980 
+================ Test on the test set ================
+ * Average Acc: 0.360 Best acc 0.360
+ Per-Task Acc:[0.08, 0.64]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/50] |	Loss: 0.040 	Average Acc: 0.989 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/50] |	Loss: 0.026 	Average Acc: 0.994 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/50] |	Loss: 0.030 	Average Acc: 0.995 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/50] |	Loss: 0.009 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/50] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.465 Best acc 0.465
+ Per-Task Acc:[0.27, 0.66]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [20/50] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [21/50] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [22/50] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [23/50] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [24/50] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.470 Best acc 0.470
+ Per-Task Acc:[0.27, 0.67]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [25/50] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [26/50] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [27/50] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================

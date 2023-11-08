@@ -1,0 +1,973 @@
+{'data_root': '/data/bzx_yjy/cifar100', 'image_size': 32, 'pin_memory': False, 'augment': True, 'workers': 8, 'device_ids': 1, 'n_gpu': 1, 'seed': 1993, 'deterministic': True, 'epoch': 20, 'batch_size': 128, 'val_per_epoch': 5, 'optimzer': {'name': 'SGD', 'kwargs': {'lr': 0.1}}, 'lr_scheduler': {'name': 'StepLR', 'kwargs': {'gamma': 0.5, 'step_size': 30}}, 'warmup': 3, 'includes': ['headers/data.yaml', 'headers/device.yaml', 'headers/model.yaml', 'headers/optimizer.yaml', 'backbones/resnet12.yaml'], 'save_path': './', 'init_cls_num': 10, 'inc_cls_num': 10, 'task_num': 10, 'optimizer': {'name': 'SGD', 'kwargs': {'lr': 0.1}}, 'backbone': {'name': 'resnet18', 'kwargs': {'num_classes': 100, 'args': {'dataset': 'cifar100'}}}, 'buffer': {'name': 'LinearBuffer', 'kwargs': {'buffer_size': 0, 'batch_size': 32, 'strategy': 'random'}}, 'classifier': {'name': 'GEM', 'kwargs': {'num_class': 100, 'feat_dim': 512, 'n_memories': 5120, 'n_task': 10, 'memory_strength': 0}}, 'rank': 0}
+GEM(
+  (net): ResNet(
+    (conv1): Sequential(
+      (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU(inplace=True)
+    )
+    (layer1): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (layer2): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (layer3): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (layer4): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  )
+  (classifier): Linear(in_features=512, out_features=100, bias=True)
+  (ce): CrossEntropyLoss()
+)
+Trainable params in the model: 11220132
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 0 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 0 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 1.868 	Average Acc: 0.332 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.752 	Average Acc: 0.445 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 1.574 	Average Acc: 0.522 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 1.098 	Average Acc: 0.631 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.816 	Average Acc: 0.724 
+================ Test on the test set ================
+ * Average Acc: 0.490 Best acc 0.490
+ Per-Task Acc:[0.49]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.560 	Average Acc: 0.809 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.387 	Average Acc: 0.870 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.275 	Average Acc: 0.908 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.100 	Average Acc: 0.970 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.088 	Average Acc: 0.972 
+================ Test on the test set ================
+ * Average Acc: 0.680 Best acc 0.680
+ Per-Task Acc:[0.68]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.050 	Average Acc: 0.982 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.025 	Average Acc: 0.993 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.018 	Average Acc: 0.995 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.008 	Average Acc: 0.999 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.006 	Average Acc: 0.999 
+================ Test on the test set ================
+ * Average Acc: 0.760 Best acc 0.760
+ Per-Task Acc:[0.76]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.007 	Average Acc: 0.999 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.005 	Average Acc: 0.999 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.001 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.001 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.750 Best acc 0.760
+ Per-Task Acc:[0.75]
+================Task 1 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 1 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 3.719 	Average Acc: 0.175 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.752 	Average Acc: 0.392 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 1.423 	Average Acc: 0.517 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.917 	Average Acc: 0.679 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.468 	Average Acc: 0.855 
+================ Test on the test set ================
+ * Average Acc: 0.345 Best acc 0.345
+ Per-Task Acc:[0.16, 0.53]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.163 	Average Acc: 0.974 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.050 	Average Acc: 0.998 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.023 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.014 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.010 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.460 Best acc 0.460
+ Per-Task Acc:[0.36, 0.56]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.007 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.455 Best acc 0.460
+ Per-Task Acc:[0.36, 0.55]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.455 Best acc 0.460
+ Per-Task Acc:[0.36, 0.55]
+================Task 2 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 2 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.765 	Average Acc: 0.318 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.127 	Average Acc: 0.624 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.743 	Average Acc: 0.744 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.324 	Average Acc: 0.910 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.082 	Average Acc: 0.990 
+================ Test on the test set ================
+ * Average Acc: 0.300 Best acc 0.300
+ Per-Task Acc:[0.23, 0.05, 0.62]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.035 	Average Acc: 0.997 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.016 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.011 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.007 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.357 Best acc 0.357
+ Per-Task Acc:[0.26, 0.09, 0.72]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.360 Best acc 0.360
+ Per-Task Acc:[0.26, 0.09, 0.73]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.360 Best acc 0.360
+ Per-Task Acc:[0.27, 0.09, 0.72]
+================Task 3 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 3 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.937 	Average Acc: 0.278 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.210 	Average Acc: 0.576 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.910 	Average Acc: 0.686 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.358 	Average Acc: 0.890 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.132 	Average Acc: 0.978 
+================ Test on the test set ================
+ * Average Acc: 0.260 Best acc 0.260
+ Per-Task Acc:[0.18, 0.03, 0.19, 0.64]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.037 	Average Acc: 0.999 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.017 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.012 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.009 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.007 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.268 Best acc 0.268
+ Per-Task Acc:[0.19, 0.04, 0.2, 0.64]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.004 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.270 Best acc 0.270
+ Per-Task Acc:[0.2, 0.04, 0.2, 0.64]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.273 Best acc 0.273
+ Per-Task Acc:[0.2, 0.04, 0.21, 0.64]
+================Task 4 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 4 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.642 	Average Acc: 0.386 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 0.853 	Average Acc: 0.734 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.431 	Average Acc: 0.873 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.195 	Average Acc: 0.959 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.035 	Average Acc: 0.998 
+================ Test on the test set ================
+ * Average Acc: 0.246 Best acc 0.246
+ Per-Task Acc:[0.14, 0.03, 0.11, 0.16, 0.79]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.015 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.011 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.005 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.258 Best acc 0.258
+ Per-Task Acc:[0.14, 0.04, 0.14, 0.18, 0.79]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.260 Best acc 0.260
+ Per-Task Acc:[0.15, 0.04, 0.15, 0.18, 0.78]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.262 Best acc 0.262
+ Per-Task Acc:[0.15, 0.04, 0.15, 0.19, 0.78]
+================Task 5 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 5 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.714 	Average Acc: 0.327 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.133 	Average Acc: 0.605 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.851 	Average Acc: 0.717 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.742 	Average Acc: 0.802 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.348 	Average Acc: 0.912 
+================ Test on the test set ================
+ * Average Acc: 0.197 Best acc 0.197
+ Per-Task Acc:[0.11, 0.02, 0.09, 0.1, 0.28, 0.58]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.041 	Average Acc: 0.998 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.015 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.010 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.007 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.006 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.217 Best acc 0.217
+ Per-Task Acc:[0.12, 0.03, 0.11, 0.13, 0.28, 0.63]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.217 Best acc 0.217
+ Per-Task Acc:[0.12, 0.03, 0.11, 0.14, 0.28, 0.62]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.220 Best acc 0.220
+ Per-Task Acc:[0.12, 0.03, 0.12, 0.14, 0.29, 0.62]
+================Task 6 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 6 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.819 	Average Acc: 0.339 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.295 	Average Acc: 0.575 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.753 	Average Acc: 0.745 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.612 	Average Acc: 0.834 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.170 	Average Acc: 0.965 
+================ Test on the test set ================
+ * Average Acc: 0.187 Best acc 0.187
+ Per-Task Acc:[0.09, 0.02, 0.07, 0.06, 0.2, 0.19, 0.68]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.026 	Average Acc: 0.998 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.011 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.005 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.210 Best acc 0.210
+ Per-Task Acc:[0.1, 0.03, 0.1, 0.09, 0.23, 0.24, 0.68]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.005 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.213 Best acc 0.213
+ Per-Task Acc:[0.11, 0.03, 0.1, 0.1, 0.24, 0.24, 0.67]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.211 Best acc 0.213
+ Per-Task Acc:[0.11, 0.03, 0.1, 0.1, 0.24, 0.24, 0.66]
+================Task 7 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 7 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.700 	Average Acc: 0.398 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 0.938 	Average Acc: 0.689 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.479 	Average Acc: 0.843 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.529 	Average Acc: 0.861 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.089 	Average Acc: 0.986 
+================ Test on the test set ================
+ * Average Acc: 0.163 Best acc 0.163
+ Per-Task Acc:[0.07, 0.02, 0.06, 0.05, 0.16, 0.07, 0.2, 0.67]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.023 	Average Acc: 0.999 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.011 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.005 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.178 Best acc 0.178
+ Per-Task Acc:[0.07, 0.02, 0.08, 0.07, 0.18, 0.09, 0.24, 0.67]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.180 Best acc 0.180
+ Per-Task Acc:[0.08, 0.03, 0.08, 0.07, 0.18, 0.1, 0.24, 0.66]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.182 Best acc 0.182
+ Per-Task Acc:[0.08, 0.03, 0.09, 0.07, 0.19, 0.1, 0.24, 0.66]
+================Task 8 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 8 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.851 	Average Acc: 0.353 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 0.995 	Average Acc: 0.678 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.503 	Average Acc: 0.839 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.754 	Average Acc: 0.824 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.564 	Average Acc: 0.876 
+================ Test on the test set ================
+ * Average Acc: 0.162 Best acc 0.162
+ Per-Task Acc:[0.05, 0.02, 0.07, 0.05, 0.16, 0.07, 0.13, 0.21, 0.7]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.038 	Average Acc: 0.993 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.016 	Average Acc: 0.999 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.009 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.005 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.167 Best acc 0.167
+ Per-Task Acc:[0.05, 0.02, 0.07, 0.05, 0.16, 0.09, 0.15, 0.24, 0.67]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.171 Best acc 0.171
+ Per-Task Acc:[0.06, 0.02, 0.07, 0.06, 0.16, 0.1, 0.15, 0.25, 0.67]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.173 Best acc 0.173
+ Per-Task Acc:[0.06, 0.03, 0.07, 0.06, 0.17, 0.1, 0.16, 0.25, 0.66]
+================Task 9 Start!================
+SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.03333333333333333
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)
+================Task 9 Training!================
+The training samples number: 5000
+learning rate: [0.03333333333333333]
+================ Train on the train set ================
+Epoch [0/20] |	Loss: 2.964 	Average Acc: 0.331 
+learning rate: [0.06666666666666667]
+================ Train on the train set ================
+Epoch [1/20] |	Loss: 1.170 	Average Acc: 0.619 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [2/20] |	Loss: 0.587 	Average Acc: 0.819 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [3/20] |	Loss: 0.469 	Average Acc: 0.884 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [4/20] |	Loss: 0.081 	Average Acc: 0.986 
+================ Test on the test set ================
+ * Average Acc: 0.138 Best acc 0.138
+ Per-Task Acc:[0.05, 0.01, 0.04, 0.04, 0.12, 0.04, 0.08, 0.14, 0.24, 0.62]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [5/20] |	Loss: 0.031 	Average Acc: 0.997 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [6/20] |	Loss: 0.012 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [7/20] |	Loss: 0.008 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [8/20] |	Loss: 0.006 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [9/20] |	Loss: 0.005 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.152 Best acc 0.152
+ Per-Task Acc:[0.05, 0.02, 0.05, 0.06, 0.13, 0.05, 0.1, 0.17, 0.28, 0.61]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [10/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [11/20] |	Loss: 0.004 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [12/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [13/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [14/20] |	Loss: 0.003 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.153 Best acc 0.153
+ Per-Task Acc:[0.05, 0.02, 0.05, 0.06, 0.13, 0.05, 0.11, 0.17, 0.29, 0.6]
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [15/20] |	Loss: 0.003 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [16/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [17/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [18/20] |	Loss: 0.002 	Average Acc: 1.000 
+learning rate: [0.1]
+================ Train on the train set ================
+Epoch [19/20] |	Loss: 0.002 	Average Acc: 1.000 
+================ Test on the test set ================
+ * Average Acc: 0.157 Best acc 0.157
+ Per-Task Acc:[0.06, 0.02, 0.05, 0.06, 0.14, 0.05, 0.12, 0.18, 0.29, 0.6]
+Time cost :  10246.50859093666

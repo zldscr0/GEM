@@ -5,7 +5,7 @@ includes:
   - headers/optimizer.yaml
   - backbones/resnet12.yaml
 
-data_root: /data/fsl/cifar10/
+data_root: /data/bzx_yjy/cifar10/
 image_size: 32
   
 save_path: ./

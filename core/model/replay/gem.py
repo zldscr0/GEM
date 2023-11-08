@@ -126,7 +126,7 @@ class GEM(nn.Module):
         #self.opt = optim.SGD(self.parameters(), args.lr)
 
         #memory_size
-        self.n_memories = kwargs["n_memories"]
+        self.n_memories = (int)(kwargs["n_memories"]/n_tasks)
         #self.gpu = args.cuda
         self.device = kwargs['device']
         #n_inputs = 32#input_size
@@ -252,6 +252,8 @@ class GEM(nn.Module):
 
                 #offset1, offset2 = compute_offsets(past_task, self.nc_per_task)
                 offset1, offset2 = compute_offsets(self.t, self.nc_per_task)
+                
+                
                 '''
                 print(self.forward(
                         self.memory_data[past_task],
@@ -283,10 +285,17 @@ class GEM(nn.Module):
                         past_task)[:, offset1: offset2],
                     (self.memory_labs[past_task] - offset1).to(self.device))
                 '''
+                '''
                 ptloss = self.ce(
                     self.forward(
                         self.memory_data[past_task],
                         self.t)[:, offset1: offset2],
+                    (self.memory_labs[past_task] - offset1).to(self.device))
+                '''
+                ptloss = self.ce(
+                    self.forward(
+                        self.memory_data[past_task],
+                        self.t),
                     (self.memory_labs[past_task] - offset1).to(self.device))
                 ptloss.backward()
                 store_grad(self.parameters, self.grads, self.grad_dims,
@@ -297,7 +306,8 @@ class GEM(nn.Module):
         self.zero_grad()
 
         offset1, offset2 = compute_offsets(self.t, self.nc_per_task)
-        output = self.forward(x, self.t)[:, offset1: offset2]
+        #output = self.forward(x, self.t)[:, offset1: offset2]
+        output = self.forward(x, self.t)
         _, predicted = torch.max(output, 1)  
         #print(predicted)
         #print(y)
@@ -340,37 +350,14 @@ class GEM(nn.Module):
         x = x.to(self.device)
         y = y.to(self.device)
         offset1, offset2 = compute_offsets(self.t, self.nc_per_task)
-        output = self.forward(x, self.t)[:, offset1: offset2]
+        #output = self.forward(x, self.t)[:, offset1: offset2]
+        output = self.forward(x, self.t)
         _, predicted = torch.max(output, 1)  
         correct = (predicted == (y - offset1)).sum().item()  
         total = y.size(0) 
         acc = correct / total 
-        print(predicted)
-        print(y)
         return predicted, acc
-    '''
-    def forward(self, x, t):
-        output = self.net(x)
-        
-        if self.is_cifar:
-            # make sure we predict classes within the current task
-            offset1 = int(t * self.nc_per_task)
-            offset2 = int((t + 1) * self.nc_per_task)
-            if offset1 > 0:
-                output[:, :offset1].data.fill_(-10e10)
-            if offset2 < self.n_outputs:
-                output[:, offset2:self.n_outputs].data.fill_(-10e10)
-        
-        offset1 = int(t * self.nc_per_task)
-        offset2 = int((t + 1) * self.nc_per_task)
-        if offset1 > 0:
-            #output[:, :offset1].data.fill_(-10e10)
-            output['features'][:, :offset1].fill_(-10e10)
-        if offset2 < self.n_outputs:
-            #output[:, offset2:self.n_outputs].data.fill_(-10e10)
-            output['features'][:, offset2:self.n_outputs].fill_(-10e10)
-        return output['features']
-    '''
+    
 
     def after_task(self, task_idx, buffer, train_loader, test_loaders):
         self.t += 1
