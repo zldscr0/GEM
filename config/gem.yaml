@@ -9,14 +9,15 @@ data_root: /data/bzx_yjy/cifar100
 image_size: 32
   
 save_path: ./
+
 # data
 init_cls_num: 20
 inc_cls_num: 20
 task_num: 5
 
 
-epoch: 80
-device_ids: 0
+epoch: 70
+device_ids: 1
 n_gpu: 1
 val_per_epoch: 5
 
@@ -37,14 +38,11 @@ lr_scheduler:
   name: StepLR
   kwargs:
     gamma: 0.5
-    step_size: 40
+    step_size: 30
 
 backbone:
-  name: resnet18
+  name: resnet32
   kwargs:
-    num_classes: 100
-    args:
-      dataset: cifar100
 
 buffer:
   name: LinearBuffer
@@ -57,8 +55,8 @@ classifier:
   name: GEM
   kwargs:
     num_class: 100
-    #feat_dim: 64
-    feat_dim: 512
+    feat_dim: 64
+    #feat_dim: 512
     #n_hiddens: 100
     #n_layers: 2
     n_memories: 5120

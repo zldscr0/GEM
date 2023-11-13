@@ -10,12 +10,12 @@ image_size: 32
   
 save_path: ./
 # data
-init_cls_num: 2
-inc_cls_num: 2
+init_cls_num: 20
+inc_cls_num: 20
 task_num: 5
 
 
-epoch: 3
+epoch: 50
 device_ids: 0
 n_gpu: 1
 val_per_epoch: 1

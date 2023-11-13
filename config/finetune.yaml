@@ -5,20 +5,20 @@ includes:
   - headers/optimizer.yaml
   - backbones/resnet12.yaml
 
-data_root: /home/xiongyakun/cifar10
+data_root: /data/bzx_yjy/cifar100
 image_size: 32
   
 save_path: ./
 # data
-init_cls_num: 2
-inc_cls_num: 2
+init_cls_num: 20
+inc_cls_num: 20
 task_num: 5
 
 
-epoch: 3
-device_ids: 5
+epoch: 100
+device_ids: 1
 n_gpu: 1
-val_per_epoch: 1
+val_per_epoch: 10
 
 optimizer:
   name: SGD
@@ -34,9 +34,9 @@ lr_scheduler:
 backbone:
   name: resnet18
   kwargs:
-    num_classes: 10
+    num_classes: 100
     args: 
-      dataset: cifar10
+      dataset: cifar100
 
 
 buffer:
@@ -49,5 +49,5 @@ buffer:
 classifier:
   name: Finetune
   kwargs:
-    num_class: 10
+    num_class: 100
     feat_dim: 512
