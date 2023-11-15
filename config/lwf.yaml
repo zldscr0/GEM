@@ -16,7 +16,7 @@ task_num: 5
 
 
 epoch: 100
-device_ids: 0
+device_ids: 1
 n_gpu: 1
 val_per_epoch: 10
 

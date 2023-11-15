@@ -231,15 +231,6 @@ class Trainer(object):
             self.buffer.total_classes += self.init_cls_num if task_idx == 0 else self.inc_cls_num
 
             dataloader = self.train_loader.get_loader(task_idx)
-
-            if task_idx==0:
-                datasets = dataloader.dataset
-                dataloader = DataLoader(
-                    datasets,
-                    shuffle = True,
-                    batch_size = self.config['batch_size'],
-                    drop_last = True)
-
             
             if isinstance(self.buffer, LinearBuffer) and task_idx != 0:
                 datasets = dataloader.dataset
@@ -307,11 +298,9 @@ class Trainer(object):
             for batch_idx, batch in enumerate(dataloader):
                 output, acc, loss = self.model.observe(batch)
                 
-                #self.optimizer.zero_grad()
-
-                #loss.backward()
-                #self.optimizer.zero_grad()
-                #loss.backward()
+                if self.config['classifier']['name']!='GEM':
+                    self.optimizer.zero_grad()
+                    loss.backward()
 
                 self.optimizer.step()
                 pbar.update(1)

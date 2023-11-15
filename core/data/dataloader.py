@@ -29,6 +29,11 @@ def get_dataloader(config, mode, cls_map=None):
     trfms_list = get_augment_method(config, mode)
     trfms_list.append(transforms.ToTensor())
     trfms_list.append(transforms.Normalize(mean=MEAN, std=STD))
+    #
+    trfms_list.append(transforms.RandomCrop(32, padding=4))
+    trfms_list.append(transforms.RandomHorizontalFlip())
+    #trfms_list.append(transforms.ColorJitter(brightness=63 / 255))
+    #
     trfms = transforms.Compose(trfms_list)
 
     if cls_map is None:
