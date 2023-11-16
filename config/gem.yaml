@@ -5,18 +5,18 @@ includes:
   - headers/optimizer.yaml
   - backbones/resnet12.yaml
 
-data_root: /data/bzx_yjy/cifar100
+data_root: /bzx/data/cifar100
 image_size: 32
   
 save_path: ./
 
 # data
-init_cls_num: 20
-inc_cls_num: 20
-task_num: 5
+init_cls_num: 10
+inc_cls_num: 10
+task_num: 10
 
 
-epoch: 170
+epoch: 150
 device_ids: 0
 n_gpu: 1
 val_per_epoch: 5
@@ -61,5 +61,5 @@ classifier:
     #n_layers: 2
     n_memories: 2000
     #n_outputs: 100
-    n_task: 5
+    n_task: 10
     memory_strength: 0
