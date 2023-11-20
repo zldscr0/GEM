@@ -135,7 +135,7 @@ self.optimizer.zero_grad()
 loss.backward()
 ```
 
-![image-20231118133431364](C:\Users\hanabi\AppData\Roaming\Typora\typora-user-images\image-20231118133431364.png)
+![image-20231118133431364](./8.png)
 
 ##### 6.config模块
 
